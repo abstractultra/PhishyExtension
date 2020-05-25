@@ -1,5 +1,6 @@
 {
-  "name": "Chrome Extension with React & Webpack",
+  "name": "PhishingNet",
+  "description": "Detecting Phishing through an NLP-Powered chrome extension",
   "options_page": "options.html",
   "background": {
     "page": "background.html"
