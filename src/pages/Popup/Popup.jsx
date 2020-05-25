@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import logo from '../../assets/img/logo.svg';
 import Greetings from '../../containers/Greetings/Greetings';
 import './Popup.css';
 
@@ -14,11 +13,33 @@ const Popup = () => {
 
   return (
     <div className="App">
-      <h1>Phishy</h1>
-      <p>This site is not a phishing site.</p>
-      <p>{currentUrl}</p>
+      <h1>PhishingNet</h1>
+      <table id="displayTable">
+        <tr>
+          <td id="urlTitle">URL:</td>
+          <td id="currentURL">{currentUrl}</td>
+        </tr>
+        <tr>
+          <td id="phishingTitle">Phishing: </td>
+          <td>{}</td>
+        </tr>
+        <tr>
+          <td>Prediction: </td>
+          <td>{}</td>
+        </tr>
+        <tr>
+          <td>Certificate:</td>
+          <td>{}</td>
+        </tr>
+        <tr>
+          <td id="overallTitle">Overall: </td>
+          <td id="overallValue">{}</td>
+        </tr>
+      </table>
     </div>
   );
 };
+
+const element = () => {};
 
 export default Popup;
