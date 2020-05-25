@@ -1,13 +1,13 @@
 body {
   width: 458px;
-  height: 475px;
+  height: 375px;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif, 'Comic Sans MS';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #4169e1;
+  background-color: #ffffff;
 }
 
 code {

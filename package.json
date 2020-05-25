@@ -16,9 +16,11 @@
     "@hot-loader/react-dom": "^16.13.0",
     "@types/chrome": "0.0.104",
     "@types/react": "^16.9.26",
+    "jquery": "^3.5.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-hot-loader": "^4.12.20"
+    "react-hot-loader": "^4.12.20",
+    "semantic-ui-react": "^0.88.2"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",

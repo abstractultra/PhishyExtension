@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Greetings from '../../containers/Greetings/Greetings';
-import './Popup.css';
+import { Header, Message, Table, Icon } from 'semantic-ui-react';
 
 const Popup = () => {
   const [currentUrl, setCurrentUrl] = useState('');
@@ -67,37 +67,47 @@ const Popup = () => {
   }, []);
 
   return (
-    <div className="App">
-      <h1>PhishingNet</h1>
-      <table id="displayTable">
-        <tr>
-          <td id="urlTitle">URL:</td>
-          <td id="currentURL">{currentUrl}</td>
-        </tr>
-        <tr>
-          <td id="phishingTitle">Phishing: </td>
-          <td>
-            {typeof phishing === 'string'
-              ? phishing
-              : phishing
-              ? 'Phishing'
-              : 'Not Phishing'}
-            , {probability.toString()}% confident
-          </td>
-        </tr>
-        <tr>
-          <td>Certificate:</td>
-          <td>
-            {secure ? 'Encrypted with HTTPS' : 'Not encrypted with HTTPS'}
-          </td>
-        </tr>
-        <tr>
-          <td id="overallTitle">Overall: </td>
-          <td id="overallValue">
-            {!phishing && secure ? 'Site is secure' : 'Site is dangerous'}
-          </td>
-        </tr>
-      </table>
+    <div style={{ padding: '2em' }}>
+      <Header size="huge">PhishingNet</Header>
+      {!phishing && secure ? (
+        <Message positive>This site should be safe.</Message>
+      ) : (
+        <Message negative>This site is not safe.</Message>
+      )}
+      <Table celled unstackable>
+        <Table.Body>
+          <Table.Row>
+            <Table.Cell collapsing>URL</Table.Cell>
+            <Table.Cell>{currentUrl}</Table.Cell>
+          </Table.Row>
+          <Table.Row positive={!phishing} negative={phishing}>
+            <Table.Cell collapsing>Phishing</Table.Cell>
+            {phishing ? (
+              <Table.Cell>
+                <Icon name="warning" />
+                Phishing, {probability}% confident
+              </Table.Cell>
+            ) : (
+              <Table.Cell>
+                <Icon name="checkmark" />
+                Not phishing, {probability}% confident
+              </Table.Cell>
+            )}
+          </Table.Row>
+          <Table.Row positive={secure} negative={!secure}>
+            <Table.Cell collapsing>HTTPS</Table.Cell>
+            {secure ? (
+              <Table.Cell>
+                <Icon name="checkmark"></Icon>Enabled
+              </Table.Cell>
+            ) : (
+              <Table.Cell>
+                <Icon name="warning"></Icon>Disabled
+              </Table.Cell>
+            )}
+          </Table.Row>
+        </Table.Body>
+      </Table>
     </div>
   );
 };
