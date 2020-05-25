@@ -6,6 +6,7 @@ const Popup = () => {
   const [currentUrl, setCurrentUrl] = useState('');
   const [phishing, setPhishing] = useState('Checking...');
   const [probability, setProbability] = useState(0);
+  const [secure, setSecure] = useState(false);
 
   async function scrapeUrl(url) {
     const response = await fetch(
@@ -25,27 +26,43 @@ const Popup = () => {
     return data.data;
   }
 
-  async function getProbability(url) {
-    const body = await scrapeUrl(url);
+  async function getProbability(body) {
     const response = await fetch(
-      `https://phishingnet.benjaminsmith.dev/MLLookup?text=${encodeURIComponent(
-        body
-      )}`,
+      `https://phishingnet.benjaminsmith.dev/MLLookup`,
       {
         method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          text: body,
+        }),
       }
     );
-    const data = await response.json();
-    setPhishing(data.Prediction);
-    setProbability(Math.round(data.Probability * 100));
+    const data = JSON.parse(await response.json());
+    const phishProbability = Math.round(data.Probability * 100);
+
+    if (phishProbability < 95) setPhishing(false);
+    else setPhishing(data.Prediction);
+
+    setProbability(phishProbability);
     return data;
+  }
+
+  async function checkSecurity(url) {
+    if (url.indexOf('https') > -1) return true;
+    else return false;
   }
 
   useEffect(() => {
     chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
       let url = tabs[0].url;
       setCurrentUrl(url);
-      getProbability(url);
+      checkSecurity(url).then((result) => setSecure(result));
+      scrapeUrl(url).then((body) => {
+        getProbability(body);
+      });
     });
   }, []);
 
@@ -70,11 +87,15 @@ const Popup = () => {
         </tr>
         <tr>
           <td>Certificate:</td>
-          <td>{}</td>
+          <td>
+            {secure ? 'Encrypted with HTTPS' : 'Not encrypted with HTTPS'}
+          </td>
         </tr>
         <tr>
           <td id="overallTitle">Overall: </td>
-          <td id="overallValue">{}</td>
+          <td id="overallValue">
+            {!phishing && secure ? 'Site is secure' : 'Site is dangerous'}
+          </td>
         </tr>
       </table>
     </div>
